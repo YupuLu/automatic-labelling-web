@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Automatic Labelling for Bimanual Mobile Manipulation by Yupu Lu and Jia Pan. Combining trajectory segmentation with vision-language reasoning to label robot demonstrations.">
+  <meta name="author" content="Yupu Lu, Jia Pan">
+  <meta name="citation_title" content="Automatic Labelling for Bimanual Mobile Manipulation">
+  <meta name="citation_author" content="Yupu Lu">
+  <meta name="citation_author" content="Jia Pan">
+  <meta name="citation_arxiv_id" content="2609.24059">
+  <title>Automatic Labelling for Bimanual Mobile Manipulation</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="shell header-inner">
+      <a class="brand" href="#top" aria-label="Paper home">Automatic Labelling</a>
+      <nav aria-label="Primary navigation">
+        <a href="#overview">Overview</a>
+        <a href="#method">Method</a>
+        <a href="#results">Experiments</a>
+        <a href="#resources">Resources</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero shell">
+      <div class="hero-copy">
+        <p class="eyebrow">Bimanual mobile manipulation · automatic demonstration labelling</p>
+        <h1>Automatic Labelling for Bimanual Mobile Manipulation</h1>
+
+        <p class="authors">Yupu Lu <span class="author-separator">&amp;</span> Jia Pan</p>
+        <p class="affiliation">School of Computing and Data Science<br>The University of Hong Kong, HKSAR</p>
+
+        <p class="hero-text">
+          A construction pipeline that combines the temporal precision of trajectory heuristics
+          with the semantic breadth of phase-localised vision-language reasoning.
+        </p>
+
+        <div class="actions" aria-label="Paper links">
+          <a class="button button-primary" href="https://arxiv.org/abs/2609.24059">Paper on arXiv ↗</a>
+          <button class="button button-secondary" type="button" disabled title="Code and project release: to be released" aria-label="Code and project: to be released">Code / project · TBR</button>
+        </div>
+
+        <p class="status-note"><span class="dot" aria-hidden="true"></span> arXiv:2609.24059 · Code and project release to follow.</p>
+      </div>
+      <aside class="hero-card" aria-label="Paper highlights">
+        <div class="hero-card-label">At a glance</div>
+        <div class="hero-stat">
+          <strong>29</strong>
+          <span>Galaxea tasks</span>
+        </div>
+        <div class="hero-stat">
+          <strong>87.4%</strong>
+          <span>agreement across three VL runs</span>
+        </div>
+        <div class="hero-stat">
+          <strong>3</strong>
+          <span>independent action streams</span>
+        </div>
+      </aside>
+    </section>
+
+    <section id="overview" class="section shell">
+      <div class="section-heading">
+        <p class="eyebrow">Overview</p>
+        <h2>From trajectories to structured subtasks</h2>
+      </div>
+      <div class="overview-grid">
+        <div>
+          <p class="lead">
+            Semantically meaningful subtask labels can provide useful context for long-horizon
+            policies, but obtaining reliable temporal boundaries and broad semantic descriptions
+            remains difficult. This work separates those responsibilities in an automatic pipeline.
+          </p>
+          <p>
+            Deterministic trajectory analysis first establishes activity phases from synchronised
+            kinematic signals. Phase-localised vision-language reasoning then describes the supplied
+            intervals, and deterministic within-stream aggregation produces semantic records for
+            the base, left arm, and right arm while preserving their asynchronous behaviour.
+          </p>
+        </div>
+        <div class="principles">
+          <div class="principle">
+            <span class="principle-number">01</span>
+            <div><h3>Localise</h3><p>Use inspectable trajectory signals to construct candidate temporal phases.</p></div>
+          </div>
+          <div class="principle">
+            <span class="principle-number">02</span>
+            <div><h3>Interpret</h3><p>Describe the contents of each fixed phase with VL reasoning.</p></div>
+          </div>
+          <div class="principle">
+            <span class="principle-number">03</span>
+            <div><h3>Aggregate</h3><p>Merge compatible descriptions independently within each physical stream.</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="method" class="section section-tinted">
+      <div class="shell">
+        <div class="section-heading">
+          <p class="eyebrow">Method</p>
+          <h2>A three-stage construction path</h2>
+          <p class="section-intro">The division of labour keeps temporal support auditable while allowing semantic descriptions to cover a broad range of interactions.</p>
+        </div>
+
+        <section id="trajectory-segmentation" class="method-group" aria-labelledby="segmentation-title">
+          <div class="method-heading">
+            <p class="eyebrow">Stage 1</p>
+            <h3 id="segmentation-title">Kinematic trajectory segmentation</h3>
+            <p>Arm motion and base/torso activity are first analysed separately. Cross-stream combination then brings these segments together with gripper events to construct the activity phases supplied to VL reasoning.</p>
+          </div>
+          <div class="figure-grid">
+            <figure class="figure-card">
+              <a class="figure-link" href="./figures/doll_storage_arm_segmentation_v33_onecol.png" aria-label="Open the arm segmentation figure at full resolution">
+                <img src="./figures/doll_storage_arm_segmentation_v33_onecol.png" alt="Direction-aware Cartesian arm segmentation" width="2594" height="2870" loading="lazy" decoding="async">
+              </a>
+              <figcaption><strong>Arm segmentation.</strong> Signed motion labels are unified into arm-local segments.</figcaption>
+            </figure>
+            <figure class="figure-card">
+              <a class="figure-link" href="./figures/doll_storage_platform_torso_v33_onecol.png" aria-label="Open the base and torso segmentation figure at full resolution">
+                <img src="./figures/doll_storage_platform_torso_v33_onecol.png" alt="Base and torso segmentation" width="2594" height="2870" loading="lazy" decoding="async">
+              </a>
+              <figcaption><strong>Base and torso segmentation.</strong> Mobile-base motion and torso-only activity are identified for cross-stream combination.</figcaption>
+            </figure>
+            <figure class="figure-card figure-card-wide">
+              <a class="figure-link" href="./figures/doll_storage_cross_stream_v53_ieee.jpg" aria-label="Open the cross-stream construction figure at full resolution">
+                <img src="./figures/doll_storage_cross_stream_v53_ieee.jpg" alt="Cross-stream temporal construction for the Doll Storage task" width="4859" height="1800" loading="lazy" decoding="async">
+              </a>
+              <figcaption><strong>Cross-stream combination and phase shaping.</strong> Arm, base, and torso segments are combined with gripper events. Concurrent activity is retained as context, and duration-aware refinement produces the activity phases for the next stage.</figcaption>
+            </figure>
+          </div>
+        </section>
+
+        <section id="reasoning-aggregation" class="method-group" aria-labelledby="reasoning-title">
+          <div class="method-heading">
+            <p class="eyebrow">Stages 2 &amp; 3</p>
+            <h3 id="reasoning-title">Phase-localised reasoning and semantic aggregation</h3>
+            <p>The activity phases from Stage 1 provide fixed temporal support for semantic interpretation. The figure below shows both the initial phase descriptions and the aggregated action streams.</p>
+          </div>
+          <div class="semantic-steps">
+            <div>
+              <h4>2. Phase-localised VL reasoning</h4>
+              <p>VL reasoning describes the visible actions, targets, and events within each supplied phase, producing separate descriptions for the left arm, right arm, and base.</p>
+            </div>
+            <div>
+              <h4>3. Within-stream semantic aggregation</h4>
+              <p>Compatible descriptions are merged independently within each stream to form semantic action sequences while preserving asynchronous arm and base behaviour.</p>
+            </div>
+          </div>
+          <figure class="figure-card figure-card-wide">
+            <a class="figure-link" href="./figures/doll_storage_phase_reasoning_v53_ieee.png" aria-label="Open the Doll Storage reasoning and aggregation figure at full resolution">
+              <img src="./figures/doll_storage_phase_reasoning_v53_ieee.png" alt="Doll Storage timeline showing kinematic phases and separate left-arm, right-arm, and base descriptions before and after aggregation" width="2148" height="1435" loading="lazy" decoding="async">
+            </a>
+            <figcaption><strong>From phase descriptions to semantic action streams.</strong> The kinematic activity timeline is the input from Stage 1. The Phase Labels rows show the outputs of Stage 2, and the Semantic Phases rows show the aggregated outputs of Stage 3. Human annotations provide qualitative context. Select the figure to view it at full resolution.</figcaption>
+          </figure>
+        </section>
+      </div>
+    </section>
+
+    <section id="results" class="section section-dark">
+      <div class="shell">
+        <div class="section-heading section-heading-light">
+          <p class="eyebrow">Experiments · Galaxea</p>
+          <h2>Temporal divisions receive higher acceptance than arm labels</h2>
+          <p class="section-intro">The Galaxea study evaluates repeatability and participant acceptance of the automatically constructed divisions and labels.</p>
+        </div>
+        <div class="metric-grid">
+          <div class="metric"><strong>87.4%</strong><span>aggregate agreement of evaluated fields across three identical-input VL runs</span></div>
+          <div class="metric"><strong>90.5%</strong><span>accepted temporal divisions</span></div>
+          <div class="metric"><strong>90.7%</strong><span>accepted robot-body labels</span></div>
+          <div class="metric"><strong>78.7%</strong><span>accepted active arm labels</span></div>
+        </div>
+        <p class="results-note">Nine participants reviewed demonstrations spanning all 29 Galaxea tasks. The acceptance gap indicates that interpreting arm actions and targets remains more challenging than identifying the temporal divisions supplied by trajectory analysis.</p>
+        <p class="results-note metric-note">Acceptance rates use judgeable responses and exclude wholly idle streams for semantic questions. Temporal questions exclude clips in which all three streams are wholly idle.</p>
+      </div>
+    </section>
+
+    <section id="task-examples" class="section shell examples-section" aria-labelledby="examples-title">
+      <div class="section-heading">
+        <p class="eyebrow">Experiments · Task examples</p>
+        <h2 id="examples-title">Different interactions, independent action streams</h2>
+        <p class="section-intro">These Galaxea examples illustrate how the pipeline describes actions across the two arms and mobile base. Expand an example to explore its timeline, or select a figure to view it at full resolution.</p>
+      </div>
+
+      <div class="task-examples">
+        <details class="task-example" open>
+          <summary><span class="task-title">Floor-cloth wiping stains</span><span class="task-kind">Grasping, wiping, and repositioning</span></summary>
+          <div class="task-content">
+            <p>Kinematic phases localise grasping, wiping, release, and repositioning while the separate streams retain asynchronous arm and body activity. This task receives high participant acceptance for both timing and semantic descriptions.</p>
+            <figure class="task-figure">
+              <a class="figure-link" href="./figures/Floor_cloth_wiping_stains_ep2_phase_reasoning_f0-788_ieee.png" aria-label="Open the floor-cloth wiping figure at full resolution">
+                <img src="./figures/Floor_cloth_wiping_stains_ep2_phase_reasoning_f0-788_ieee.png" alt="Floor-cloth wiping example showing kinematic phases, arm and base descriptions, aggregated semantic sequences, and reference annotations" width="2148" height="1435" loading="lazy" decoding="async">
+              </a>
+              <figcaption>Phase-localised reasoning and within-stream aggregation for floor-cloth wiping. Human annotations provide qualitative context.</figcaption>
+            </figure>
+          </div>
+        </details>
+
+        <details class="task-example">
+          <summary><span class="task-title">Chair push and place</span><span class="task-kind">Contact and mobile-base motion</span></summary>
+          <div class="task-content">
+            <p>The base stream records navigation separately from the arm's grasp–hold–release sequence. Lower participant acceptance on both timing and content shows that the difficulties in this task extend beyond semantic interpretation alone.</p>
+            <figure class="task-figure">
+              <a class="figure-link" href="./figures/Chair_Push_And_Place_ep2_phase_reasoning_f0-587_ieee.png" aria-label="Open the chair pushing figure at full resolution">
+                <img src="./figures/Chair_Push_And_Place_ep2_phase_reasoning_f0-587_ieee.png" alt="Chair pushing example with separate left-arm, right-arm, and base timelines before and after semantic aggregation" width="2148" height="1435" loading="lazy" decoding="async">
+              </a>
+              <figcaption>Independent streams preserve the temporal relationship between arm interaction and base movement during chair pushing.</figcaption>
+            </figure>
+          </div>
+        </details>
+
+        <details class="task-example">
+          <summary><span class="task-title">Arrange sofa cushions</span><span class="task-kind">Deformable-object manipulation</span></summary>
+          <div class="task-content">
+            <p>Persistent contact and small bimanual adjustments can produce several locally plausible descriptions that remain separate after aggregation. This example motivates higher-level semantic reasoning over sustained interactions.</p>
+            <figure class="task-figure">
+              <a class="figure-link" href="./figures/Arrange_Sofa_Cushions_ep0_phase_reasoning_f0-756_ieee.png" aria-label="Open the sofa cushion arrangement figure at full resolution">
+                <img src="./figures/Arrange_Sofa_Cushions_ep0_phase_reasoning_f0-756_ieee.png" alt="Sofa cushion arrangement example showing arm contact and manipulation descriptions across the phase and aggregated timelines" width="2148" height="1435" loading="lazy" decoding="async">
+              </a>
+              <figcaption>Local action descriptions during cushion arrangement illustrate the challenge of summarising sustained bimanual contact.</figcaption>
+            </figure>
+          </div>
+        </details>
+      </div>
+
+      <div class="portability-example">
+        <h3>Portability to BEHAVIOR-1K</h3>
+        <p>The <em>Turn On Radio</em> example applies the same pipeline parameters to a simulated demonstration. Expressing duration thresholds in seconds accommodates its different recording rate.</p>
+        <details class="task-example">
+          <summary><span class="task-title">Turn on radio</span><span class="task-kind">BEHAVIOR-1K · Portability example</span></summary>
+          <div class="task-content">
+            <figure class="task-figure">
+              <a class="figure-link" href="./figures/task-0000_ep1_phase_reasoning_f0-2340_ieee.png" aria-label="Open the BEHAVIOR-1K radio task figure at full resolution">
+                <img src="./figures/task-0000_ep1_phase_reasoning_f0-2340_ieee.png" alt="BEHAVIOR-1K turn-on-radio example processed with the trajectory segmentation, phase-localised reasoning, and semantic aggregation pipeline" width="2148" height="1435" loading="lazy" decoding="async">
+              </a>
+              <figcaption>A portability example using the same construction stages and duration parameters as the Galaxea evaluation.</figcaption>
+            </figure>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <section id="resources" class="section shell resources-section">
+      <div class="section-heading">
+        <p class="eyebrow">Resources</p>
+        <h2>Paper and release links</h2>
+      </div>
+      <div class="resources-grid">
+        <div class="resource-list">
+          <a class="resource-link" href="https://arxiv.org/abs/2609.24059"><span>Paper</span><span aria-hidden="true">↗</span></a>
+          <div class="resource-link resource-pending"><span>Code / project</span><abbr title="To be released">TBR</abbr></div>
+          <div class="resource-link resource-pending"><span>Supplementary material</span><abbr title="To be released">TBR</abbr></div>
+        </div>
+        <div class="citation-box">
+          <div class="citation-heading"><span>BibTeX</span><span class="small-note">arXiv preprint</span></div>
+          <pre><code>@article{lu2026automatic,
+  title   = {Automatic Labelling for Bimanual Mobile Manipulation},
+  author  = {Yupu Lu and Jia Pan},
+  journal = {arXiv preprint arXiv:2609.24059},
+  year    = {2026}
+}
+</code></pre>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="shell footer-inner">
+      <span>Automatic Labelling for Bimanual Mobile Manipulation</span>
+      <span>Yupu Lu &amp; Jia Pan · The University of Hong Kong</span>
+    </div>
+  </footer>
+</body>
+</html>
