@@ -133,8 +133,6 @@ figcaption { padding: 14px 8px 3px; color: var(--muted); font-size: 0.79rem; lin
 .resource-list { border-top: 1px solid var(--line); }
 .resource-link { display: flex; justify-content: space-between; gap: 20px; padding: 16px 0; border-bottom: 1px solid var(--line); color: var(--navy); font-size: 0.91rem; font-weight: 700; text-decoration: none; }
 a.resource-link:hover { color: var(--blue); }
-.resource-pending { color: var(--muted); font-weight: 500; }
-.resource-pending abbr { cursor: help; text-underline-offset: 3px; }
 .citation-box { overflow: hidden; border: 1px solid var(--line); border-radius: 13px; background: #f7f9fa; }
 .citation-heading { display: flex; justify-content: space-between; padding: 13px 17px; border-bottom: 1px solid var(--line); color: var(--navy); font-size: 0.8rem; font-weight: 800; }
 .small-note { color: var(--muted); font-size: 0.68rem; font-weight: 500; }

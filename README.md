@@ -9,9 +9,8 @@ The University of Hong Kong, HKSAR, following the manuscript's author block.
 Paper links and the BibTeX citation point to <https://arxiv.org/abs/2609.24059>.
 No local `paper.pdf` is needed.
 
-Code / project and supplementary material are marked **TBR** (to be released).
-When these resources are available, replace the disabled hero button and pending
-resource rows with links in `index.html`.
+The code is released at <https://github.com/YupuLu/automatic-labelling>,
+linked from the hero button and the Resources section.
 
 ## Directory layout
 
