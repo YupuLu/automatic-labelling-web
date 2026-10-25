@@ -10,7 +10,7 @@
   <meta name="citation_author" content="Jia Pan">
   <meta name="citation_arxiv_id" content="2609.24059">
   <title>Automatic Labelling for Bimanual Mobile Manipulation</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=20261025">
 </head>
 <body>
   <header class="site-header">
@@ -289,7 +289,7 @@
       const closeLightbox = () => {
         lightbox.hidden = true;
         document.body.classList.remove('lightbox-open');
-        if (lastTrigger) lastTrigger.focus();
+        if (lastTrigger) lastTrigger.focus({ preventScroll: true });
       };
 
       document.querySelectorAll('.figure-link').forEach((trigger) => {
@@ -301,14 +301,13 @@
           lightboxImage.alt = image ? image.alt : '';
           lightbox.hidden = false;
           document.body.classList.add('lightbox-open');
-          closeButton.focus();
+          closeButton.focus({ preventScroll: true });
         });
       });
 
-      closeButton.addEventListener('click', closeLightbox);
-      lightbox.addEventListener('click', (event) => {
-        if (event.target === lightbox) closeLightbox();
-      });
+      // Any click on the overlay closes it: the picture, the backdrop or the
+      // close button.
+      lightbox.addEventListener('click', closeLightbox);
       document.addEventListener('keydown', (event) => {
         if (event.key === 'Escape' && !lightbox.hidden) closeLightbox();
       });
